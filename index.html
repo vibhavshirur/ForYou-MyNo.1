@@ -341,13 +341,14 @@
     return new Date(utcMs + 5.5 * 3600000);
   }
 
-  function getDayNumber() {
-    const ist   = getISTDate();
-    const start = new Date(SERIES_START_ISO + 'T00:00:00+05:30');
-    const today = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
-    const diff  = Math.floor((today - start) / 86400000) + 1;
-    return Math.min(Math.max(diff, 1), 30);
-  }
+function getDayNumber() {
+  const ist   = getISTDate();
+  // Parse start date safely without relying on timezone offset in string
+  const start = new Date(2026, 4, 25); // month is 0-indexed: 4 = May
+  const today = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
+  const diff  = Math.floor((today - start) / 86400000) + 1;
+  return Math.min(Math.max(diff, 1), 30);
+}
 
   function getTodayData() { return DAYS_DATA[getDayNumber() - 1]; }
 
