@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For You, My Love </title>
+  <title>For You, My Love 💕</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     @font-face {
       font-family: 'Ailerons';
-      src: local('Ailerons'), url('./assets/fonts/Ailerons-Regular.otf') format('opentype'), url('https://cdn.jsdelivr.net/gh/felipesilvadv/ailerons@main/Ailerons-Typeface.otf') format('opentype');
+      src: local('Ailerons'),
+           url('./assets/fonts/Ailerons-Regular.otf') format('opentype'),
+           url('https://cdn.jsdelivr.net/gh/felipesilvadv/ailerons@main/Ailerons-Typeface.otf') format('opentype');
       font-display: swap;
     }
 
@@ -27,7 +28,7 @@
       --heart-pink:      #e8637a;
       --heart-pink-dark: #c43f5a;
       --bg:              #fdf5f7;
-      --border:          rgba(200, 140, 160, 0.2);
+      --border:          rgba(200,140,160,0.2);
       --text:            #2a1a20;
       --text-muted:      #7a5560;
       --text-faint:      #b89aa0;
@@ -41,12 +42,10 @@
       --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
       --text-2xl:  clamp(2rem,     1.2rem  + 2.5vw,  3.5rem);
       --text-3xl:  clamp(2.5rem,   1rem    + 4vw,    5rem);
-      --space-1:0.25rem;--space-2:0.5rem;--space-3:0.75rem;
-      --space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;
-      --space-8:2rem;--space-10:2.5rem;--space-12:3rem;
-      --space-16:4rem;--space-20:5rem;--space-24:6rem;
-      --radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;
-      --radius-xl:1rem;--radius-2xl:1.5rem;--radius-full:9999px;
+      --sp1:.25rem;--sp2:.5rem;--sp3:.75rem;--sp4:1rem;--sp5:1.25rem;
+      --sp6:1.5rem;--sp8:2rem;--sp10:2.5rem;--sp12:3rem;--sp16:4rem;
+      --r-sm:.375rem;--r-md:.5rem;--r-lg:.75rem;
+      --r-xl:1rem;--r-2xl:1.5rem;--r-full:9999px;
       --ease-out:cubic-bezier(0.16,1,0.3,1);
       --t-fast:180ms;
     }
@@ -60,7 +59,7 @@
     button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
 
-    /* BACKGROUND BLOBS */
+    /* ── BACKGROUND BLOBS ── */
     .bg-wash{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
     .bg-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.45;}
     .bg-blob-1{width:60vw;height:60vw;top:-10%;left:-15%;background:radial-gradient(circle,var(--her-blue-light),transparent 70%);animation:bd1 20s ease-in-out infinite alternate;}
@@ -70,122 +69,82 @@
     @keyframes bd2{from{transform:translate(0,0)scale(1);}to{transform:translate(-6vw,-5vh)scale(0.95);}}
     @keyframes bd3{from{transform:translate(0,0)scale(1);}to{transform:translate(-4vw,6vh)scale(1.08);}}
 
-    /* FLOATING HEARTS */
+    /* ── FLOATING HEARTS ── */
     .hearts-layer{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
     .heart-float{position:absolute;animation:heart-rise linear forwards;opacity:0;}
     .heart-float svg{display:block;}
     @keyframes heart-rise{
-      0%  {opacity:0;transform:translateY(0) rotate(0deg);}
-      10% {opacity:0.7;}
-      80% {opacity:0.5;}
-      100%{opacity:0;transform:translateY(-110vh) rotate(25deg);}
+      0%{opacity:0;transform:translateY(0)rotate(0deg);}
+      10%{opacity:0.7;}80%{opacity:0.5;}
+      100%{opacity:0;transform:translateY(-110vh)rotate(25deg);}
     }
 
-    /* PAGE LAYOUT */
-    .page{position:relative;z-index:2;min-height:100dvh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-8) var(--space-4);}
+    /* ── PAGE LAYOUT ── */
+    .page{position:relative;z-index:2;min-height:100dvh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:var(--sp8) var(--sp4);}
     .page.active{display:flex;}
 
-    /* ===== PAGE 1 — WELCOME ===== */
+    /* ── PAGE 1: WELCOME ── */
     .welcome-card{
       background:rgba(255,248,250,0.78);
       backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-      border:1px solid var(--border);border-radius:var(--radius-2xl);
-      padding:clamp(var(--space-8),5vw,var(--space-16));
+      border:1px solid var(--border);border-radius:var(--r-2xl);
+      padding:clamp(var(--sp8),5vw,var(--sp16));
       max-width:680px;width:100%;text-align:center;position:relative;
     }
-    .greeting-time{font-size:var(--text-sm);font-weight:300;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--space-6);}
-    .greeting-main{font-size:var(--text-2xl);font-weight:700;color:var(--text);margin-bottom:var(--space-4);line-height:1.15;}
+    .day-indicator{position:absolute;top:var(--sp4);right:var(--sp5);font-size:var(--text-xs);color:var(--text-faint);letter-spacing:0.08em;}
+    .greeting-time{font-size:var(--text-sm);font-weight:300;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--sp6);}
+    .greeting-main{font-size:var(--text-2xl);font-weight:700;color:var(--text);margin-bottom:var(--sp4);line-height:1.15;}
     .greeting-main em{font-style:normal;background:linear-gradient(in oklab,var(--her-blue),var(--heart-pink-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-    .greeting-date{font-size:var(--text-base);color:var(--text-muted);margin-bottom:var(--space-8);}
+    .greeting-date{font-size:var(--text-base);color:var(--text-muted);margin-bottom:var(--sp8);}
 
-    /* Divider */
-    .divider-hearts{display:flex;align-items:center;gap:var(--space-3);justify-content:center;margin-bottom:var(--space-8);}
+    .divider-hearts{display:flex;align-items:center;gap:var(--sp3);justify-content:center;margin-bottom:var(--sp8);}
     .divider-hearts .line{flex:1;max-width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--warm-petal));}
     .divider-hearts .line.right{background:linear-gradient(90deg,var(--warm-petal),transparent);}
 
-    .topic-announce{font-size:var(--text-base);color:var(--text-muted);margin-bottom:var(--space-4);line-height:1.7;}
-    .topic-name{display:block;text-align:center;font-size:var(--text-xl);font-weight:700;font-style:italic;background:linear-gradient(in oklab,var(--my-red-deep),var(--heart-pink-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:var(--space-6);}
+    .topic-announce{font-size:var(--text-base);color:var(--text-muted);margin-bottom:var(--sp4);line-height:1.7;}
+    .topic-name{display:block;text-align:center;font-size:var(--text-xl);font-weight:700;font-style:italic;background:linear-gradient(in oklab,var(--my-red-deep),var(--heart-pink-dark));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:var(--sp6);}
 
-    .cta-row{display:flex;justify-content:flex-end;margin-top:var(--space-2);}
-    .cta-btn{display:inline-flex;align-items:center;gap:var(--space-2);background:linear-gradient(135deg in oklab,var(--her-blue),var(--heart-pink-dark));color:var(--text-on-dark);font-size:var(--text-sm);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:var(--space-3) var(--space-6);border-radius:var(--radius-full);border:none;cursor:pointer;transition:opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out);}
+    .cta-row{display:flex;justify-content:flex-end;margin-top:var(--sp2);}
+    .cta-btn{display:inline-flex;align-items:center;gap:var(--sp2);background:linear-gradient(135deg in oklab,var(--her-blue),var(--heart-pink-dark));color:var(--text-on-dark);font-size:var(--text-sm);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:var(--sp3) var(--sp6);border-radius:var(--r-full);border:none;cursor:pointer;transition:opacity var(--t-fast) var(--ease-out),transform var(--t-fast) var(--ease-out);}
     .cta-btn:hover{opacity:0.9;transform:translateY(-2px);}
     .cta-btn:active{opacity:1;transform:translateY(0);}
-    .day-indicator{position:absolute;top:var(--space-4);right:var(--space-5);font-size:var(--text-xs);color:var(--text-faint);letter-spacing:0.08em;}
 
-    /* ===== PAGE 2 — MESSAGE ===== */
-    .message-page-inner{
-      display:flex;flex-direction:column;align-items:center;
-      gap:var(--space-6);
-      max-width:720px;width:100%;
-    }
+    /* ── PAGE 2: MESSAGE ── */
+    .message-page-inner{display:flex;flex-direction:column;align-items:center;gap:var(--sp6);max-width:720px;width:100%;}
 
-    /* Polaroid frames */
-    .polaroid{
-      background:#fffef8;
-      border:1px solid rgba(180,150,140,0.25);
-      border-radius:var(--radius-sm);
-      padding:var(--space-4) var(--space-4) var(--space-8);
-      width:100%;
-      position:relative;
-    }
-    .polaroid-img{
-      width:100%;
-      aspect-ratio:4/3;
-      background:rgba(200,180,190,0.15);
-      border-radius:2px;
-      overflow:hidden;
-      display:flex;align-items:center;justify-content:center;
-    }
-    .polaroid-img img{width:100%;height:100%;object-fit:cover;border-radius:2px;}
-    .polaroid-placeholder{
-      font-size:var(--text-sm);color:var(--text-faint);
-      font-style:italic;text-align:center;padding:var(--space-4);
-      max-width:none;
-    }
-    .polaroid-caption{
-      position:absolute;bottom:var(--space-2);left:0;right:0;
-      text-align:center;font-size:var(--text-xs);color:var(--text-faint);
-      letter-spacing:0.05em;
-    }
+    /* Polaroid */
+    .polaroid{background:#fffef8;border:1px solid rgba(180,150,140,0.25);border-radius:var(--r-sm);padding:var(--sp4) var(--sp4) var(--sp8);width:100%;position:relative;}
+    .polaroid-media{width:100%;aspect-ratio:4/3;background:rgba(200,180,190,0.12);border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+    .polaroid-media img,.polaroid-media video{width:100%;height:100%;object-fit:cover;border-radius:2px;}
+    .polaroid-placeholder{font-size:var(--text-sm);color:var(--text-faint);font-style:italic;text-align:center;padding:var(--sp4);max-width:none;}
+    .polaroid-caption{position:absolute;bottom:var(--sp2);left:0;right:0;text-align:center;font-size:var(--text-xs);color:var(--text-faint);letter-spacing:0.05em;}
 
     /* Message card */
-    .message-card{
-      background:rgba(255,248,250,0.82);
-      backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-      border:1px solid var(--border);border-radius:var(--radius-2xl);
-      padding:clamp(var(--space-8),5vw,var(--space-16));
-      width:100%;position:relative;
-    }
-    .back-btn{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--text-muted);margin-bottom:var(--space-8);cursor:pointer;transition:color var(--t-fast) var(--ease-out);background:none;border:none;padding:0;}
+    .message-card{background:rgba(255,248,250,0.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:var(--r-2xl);padding:clamp(var(--sp8),5vw,var(--sp16));width:100%;position:relative;}
+    .back-btn{display:inline-flex;align-items:center;gap:var(--sp2);font-size:var(--text-sm);color:var(--text-muted);margin-bottom:var(--sp8);cursor:pointer;transition:color var(--t-fast) var(--ease-out);background:none;border:none;padding:0;}
     .back-btn:hover{color:var(--heart-pink-dark);}
-    .message-element-label{font-size:var(--text-xs);font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--her-blue);margin-bottom:var(--space-3);}
-    .message-element-title{font-size:var(--text-3xl);font-weight:700;color:var(--text);margin-bottom:var(--space-6);line-height:1.1;}
-    .message-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--my-red),var(--heart-pink));border-radius:var(--radius-full);margin-bottom:var(--space-8);}
+    .message-element-label{font-size:var(--text-xs);font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--her-blue);margin-bottom:var(--sp3);}
+    .message-element-title{font-size:var(--text-3xl);font-weight:700;color:var(--text);margin-bottom:var(--sp6);line-height:1.1;}
+    .message-divider{width:60px;height:3px;background:linear-gradient(90deg,var(--my-red),var(--heart-pink));border-radius:var(--r-full);margin-bottom:var(--sp8);}
     .message-body{font-size:var(--text-base);color:var(--text-muted);line-height:1.9;white-space:pre-line;}
 
-    /* Signature in Ailerons */
-    .message-signature{
-      margin-top:var(--space-10);
-      font-family:var(--font-sig);
-      font-size:var(--text-lg);
-      color:var(--my-red);
-      text-align:right;
-      line-height:1.4;
-    }
-    .message-signature .sig-heart{display:inline-block;vertical-align:middle;margin:0 var(--space-1);}
-    .message-signature .sig-name{display:block;font-size:var(--text-xl);}
+    /* Signature */
+    .message-signature{margin-top:var(--sp10);font-family:var(--font-sig);font-size:var(--text-lg);color:var(--my-red);text-align:right;line-height:1.4;}
+    .sig-heart{display:inline-block;vertical-align:middle;margin:0 .2rem;}
+    .sig-name{display:block;font-size:var(--text-xl);}
 
-    /* PAGE TRANSITION */
+    /* ── PAGE TRANSITION ── */
     .page-transition-overlay{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg in oklab,var(--her-blue-pale),var(--warm-rose));opacity:0;pointer-events:none;transition:opacity 0.35s var(--ease-out);}
     .page-transition-overlay.active{opacity:1;pointer-events:all;}
 
-    /* ENTRY ANIMATIONS */
+    /* ── ENTRY ANIMATIONS ── */
     .animate-in{animation:enter-up 0.6s var(--ease-out) both;}
     @keyframes enter-up{from{opacity:0;clip-path:inset(8% 0 0 0);}to{opacity:1;clip-path:inset(0 0 0 0);}}
-    .d1{animation-delay:0.08s;}.d2{animation-delay:0.16s;}.d3{animation-delay:0.24s;}.d4{animation-delay:0.32s;}.d5{animation-delay:0.4s;}
+    .d1{animation-delay:.08s;}.d2{animation-delay:.16s;}.d3{animation-delay:.24s;}
+    .d4{animation-delay:.32s;}.d5{animation-delay:.4s;}
 
     @media(max-width:480px){
-      .welcome-card,.message-card{border-radius:var(--radius-xl);}
+      .welcome-card,.message-card{border-radius:var(--r-xl);}
       .greeting-main{font-size:var(--text-xl);}
     }
   </style>
@@ -200,40 +159,28 @@
 <div class="hearts-layer" aria-hidden="true" id="heartsLayer"></div>
 <div class="page-transition-overlay" id="transitionOverlay"></div>
 
-<!-- ===== PAGE 1: WELCOME ===== -->
+<!-- ══════════════════════════════
+     PAGE 1 — WELCOME
+══════════════════════════════ -->
 <section class="page active" id="pageLanding" role="main">
   <div class="welcome-card animate-in">
     <div class="day-indicator" id="dayIndicator"></div>
-
     <p class="greeting-time animate-in d1" id="greetingTime"></p>
-
     <h1 class="greeting-main animate-in d2" id="greetingMain"></h1>
-
     <p class="greeting-date animate-in d3" id="greetingDate"></p>
 
-    <!-- Divider heart: arrow enters from bottom-left outside, hidden through middle, reappears exiting top-right outside -->
     <div class="divider-hearts animate-in d3">
       <div class="line"></div>
       <svg width="44" height="44" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <!-- Clip mask = the heart shape: only inside the heart is clipped OUT (we invert via two rects) -->
-          <!-- We draw arrow in two segments: outside-left and outside-right, skipping the heart interior -->
-          <!-- Heart fill path for clip -->
-          <clipPath id="heartClip">
-            <path d="M30 52S8 37 8 22.5a10.5 10.5 0 0 1 22-2 10.5 10.5 0 0 1 22 2C52 37 30 52 30 52Z"/>
-          </clipPath>
-          <!-- Inverse clip: everything EXCEPT the heart -->
           <mask id="outsideHeart">
             <rect width="60" height="60" fill="white"/>
             <path d="M30 52S8 37 8 22.5a10.5 10.5 0 0 1 22-2 10.5 10.5 0 0 1 22 2C52 37 30 52 30 52Z" fill="black"/>
           </mask>
         </defs>
-        <!-- Heart shape (pink) -->
         <path d="M30 52S8 37 8 22.5a10.5 10.5 0 0 1 22-2 10.5 10.5 0 0 1 22 2C52 37 30 52 30 52Z" fill="#e8637a" stroke="#c43f5a" stroke-width="1.5"/>
-        <!-- Arrow line: full diagonal from (-4,58) to (64,2) — visible only outside heart via mask -->
-        <line x1="5" y1="51" x2="55" y2="9" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" mask="url(#outsideHeart)"/>
-        <!-- Arrowhead at exit point top-right (64,2) — always outside -->
-        <polyline points="47,7 55,9 53,17" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" mask="url(#outsideHeart)"/>
+        <line x1="6" y1="50" x2="56" y2="8" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" mask="url(#outsideHeart)"/>
+        <polyline points="48,6 56,8 54,16" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" mask="url(#outsideHeart)"/>
       </svg>
       <div class="line right"></div>
     </div>
@@ -250,25 +197,26 @@
   </div>
 </section>
 
-<!-- ===== PAGE 2: MESSAGE ===== -->
+<!-- ══════════════════════════════
+     PAGE 2 — MESSAGE
+══════════════════════════════ -->
 <section class="page" id="pageMessage" role="main" aria-hidden="true">
   <div class="message-page-inner">
 
     <!-- TOP POLAROID -->
-    <div class="polaroid animate-in" id="polaroidTop">
-      <div class="polaroid-img" id="polaroidTopImg">
+    <div class="polaroid animate-in">
+      <div class="polaroid-media" id="polaroidTopMedia">
         <p class="polaroid-placeholder">Hopefully a photo related to the topic</p>
       </div>
-      <div class="polaroid-caption" id="polaroidTopCaption"></div>
+      <div class="polaroid-caption">Hopefully a photo related to the topic</div>
     </div>
 
     <!-- MESSAGE CARD -->
     <div class="message-card">
-      <button class="back-btn" onclick="goBack()" aria-label="Go back">
+      <button class="back-btn" onclick="goBack()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Back
       </button>
-
       <p class="message-element-label animate-in">Today's Lesson</p>
       <h2 class="message-element-title animate-in d1" id="messageTitle"></h2>
       <div class="message-divider animate-in d2"></div>
@@ -285,8 +233,8 @@
               </mask>
             </defs>
             <path d="M30 52S8 37 8 22.5a10.5 10.5 0 0 1 22-2 10.5 10.5 0 0 1 22 2C52 37 30 52 30 52Z" fill="#c0392b"/>
-            <line x1="5" y1="51" x2="55" y2="9" stroke="#3a7bd5" stroke-width="2.4" stroke-linecap="round" mask="url(#outsideHeart2)"/>
-            <polyline points="47,7 55,9 53,17" stroke="#3a7bd5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" mask="url(#outsideHeart2)"/>
+            <line x1="6" y1="50" x2="56" y2="8" stroke="#3a7bd5" stroke-width="2.4" stroke-linecap="round" mask="url(#outsideHeart2)"/>
+            <polyline points="48,6 56,8 54,16" stroke="#3a7bd5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" mask="url(#outsideHeart2)"/>
           </svg>
         </span>
         <span class="sig-name">— Venom</span>
@@ -294,153 +242,209 @@
     </div>
 
     <!-- BOTTOM POLAROID -->
-    <div class="polaroid animate-in d2" id="polaroidBottom">
-      <div class="polaroid-img" id="polaroidBottomImg">
+    <div class="polaroid animate-in d2">
+      <div class="polaroid-media" id="polaroidBottomMedia">
         <p class="polaroid-placeholder">A photo of me (or a dog)</p>
       </div>
-      <div class="polaroid-caption" id="polaroidBottomCaption"></div>
+      <div class="polaroid-caption">A photo of me (or a dog)</div>
     </div>
 
   </div>
 </section>
 
 <script>
-  /* ===== 30-DAY DATA ===== */
+  /* ════════════════════════════════════════
+     30-DAY DATA
+     → Replace each message & sig with your personal words!
+  ════════════════════════════════════════ */
   const DAYS_DATA = [
-    { day:1,  element:"Patience",    message:"Write your personal message about Patience here.\n\nReplace this with your own heartfelt words.",    sig:"With all my heart" },
-    { day:2,  element:"Kindness",    message:"Write your personal message about Kindness here.\n\nReplace this with your own heartfelt words.",    sig:"With all my heart" },
-    { day:3,  element:"Gratitude",   message:"Write your personal message about Gratitude here.\n\nReplace this with your own heartfelt words.",   sig:"With all my heart" },
-    { day:4,  element:"Resilience",  message:"Write your personal message about Resilience here.\n\nReplace this with your own heartfelt words.",  sig:"With all my heart" },
-    { day:5,  element:"Empathy",     message:"Write your personal message about Empathy here.\n\nReplace this with your own heartfelt words.",     sig:"With all my heart" },
-    { day:6,  element:"Curiosity",   message:"Write your personal message about Curiosity here.\n\nReplace this with your own heartfelt words.",   sig:"With all my heart" },
-    { day:7,  element:"Trust",       message:"Write your personal message about Trust here.\n\nReplace this with your own heartfelt words.",       sig:"With all my heart" },
-    { day:8,  element:"Creativity",  message:"Write your personal message about Creativity here.\n\nReplace this with your own heartfelt words.",  sig:"With all my heart" },
-    { day:9,  element:"Courage",     message:"Write your personal message about Courage here.\n\nReplace this with your own heartfelt words.",     sig:"With all my heart" },
-    { day:10, element:"Joy",         message:"Write your personal message about Joy here.\n\nReplace this with your own heartfelt words.",         sig:"With all my heart" },
-    { day:11, element:"Mindfulness", message:"Write your personal message about Mindfulness here.\n\nReplace this with your own heartfelt words.", sig:"With all my heart" },
-    { day:12, element:"Generosity",  message:"Write your personal message about Generosity here.\n\nReplace this with your own heartfelt words.",  sig:"With all my heart" },
-    { day:13, element:"Honesty",     message:"Write your personal message about Honesty here.\n\nReplace this with your own heartfelt words.",     sig:"With all my heart" },
-    { day:14, element:"Compassion",  message:"Write your personal message about Compassion here.\n\nReplace this with your own heartfelt words.",  sig:"With all my heart" },
-    { day:15, element:"Balance",     message:"Write your personal message about Balance here.\n\nReplace this with your own heartfelt words.",     sig:"With all my heart" },
-    { day:16, element:"Strength",    message:"Write your personal message about Strength here.\n\nReplace this with your own heartfelt words.",    sig:"With all my heart" },
-    { day:17, element:"Warmth",      message:"Write your personal message about Warmth here.\n\nReplace this with your own heartfelt words.",      sig:"With all my heart" },
-    { day:18, element:"Forgiveness", message:"Write your personal message about Forgiveness here.\n\nReplace this with your own heartfelt words.", sig:"With all my heart" },
-    { day:19, element:"Wonder",      message:"Write your personal message about Wonder here.\n\nReplace this with your own heartfelt words.",      sig:"With all my heart" },
-    { day:20, element:"Dedication",  message:"Write your personal message about Dedication here.\n\nReplace this with your own heartfelt words.",  sig:"With all my heart" },
-    { day:21, element:"Playfulness", message:"Write your personal message about Playfulness here.\n\nReplace this with your own heartfelt words.", sig:"With all my heart" },
-    { day:22, element:"Grace",       message:"Write your personal message about Grace here.\n\nReplace this with your own heartfelt words.",       sig:"With all my heart" },
-    { day:23, element:"Wisdom",      message:"Write your personal message about Wisdom here.\n\nReplace this with your own heartfelt words.",      sig:"With all my heart" },
-    { day:24, element:"Tenderness",  message:"Write your personal message about Tenderness here.\n\nReplace this with your own heartfelt words.",  sig:"With all my heart" },
-    { day:25, element:"Hope",        message:"Write your personal message about Hope here.\n\nReplace this with your own heartfelt words.",        sig:"With all my heart" },
-    { day:26, element:"Adventure",   message:"Write your personal message about Adventure here.\n\nReplace this with your own heartfelt words.",   sig:"With all my heart" },
-    { day:27, element:"Serenity",    message:"Write your personal message about Serenity here.\n\nReplace this with your own heartfelt words.",    sig:"With all my heart" },
-    { day:28, element:"Passion",     message:"Write your personal message about Passion here.\n\nReplace this with your own heartfelt words.",     sig:"With all my heart" },
-    { day:29, element:"Loyalty",     message:"Write your personal message about Loyalty here.\n\nReplace this with your own heartfelt words.",     sig:"With all my heart" },
-    { day:30, element:"Love",        message:"Write your personal message about Love here — make this the most special one.\n\nReplace this with your own heartfelt words.", sig:"With all my heart" },
+    { day:1,  element:"Patience",    sig:"With all my heart", message:"Write your personal message about Patience here.\n\nReplace this with your own heartfelt words." },
+    { day:2,  element:"Kindness",    sig:"With all my heart", message:"Write your personal message about Kindness here.\n\nReplace this with your own heartfelt words." },
+    { day:3,  element:"Gratitude",   sig:"With all my heart", message:"Write your personal message about Gratitude here.\n\nReplace this with your own heartfelt words." },
+    { day:4,  element:"Resilience",  sig:"With all my heart", message:"Write your personal message about Resilience here.\n\nReplace this with your own heartfelt words." },
+    { day:5,  element:"Empathy",     sig:"With all my heart", message:"Write your personal message about Empathy here.\n\nReplace this with your own heartfelt words." },
+    { day:6,  element:"Curiosity",   sig:"With all my heart", message:"Write your personal message about Curiosity here.\n\nReplace this with your own heartfelt words." },
+    { day:7,  element:"Trust",       sig:"With all my heart", message:"Write your personal message about Trust here.\n\nReplace this with your own heartfelt words." },
+    { day:8,  element:"Creativity",  sig:"With all my heart", message:"Write your personal message about Creativity here.\n\nReplace this with your own heartfelt words." },
+    { day:9,  element:"Courage",     sig:"With all my heart", message:"Write your personal message about Courage here.\n\nReplace this with your own heartfelt words." },
+    { day:10, element:"Joy",         sig:"With all my heart", message:"Write your personal message about Joy here.\n\nReplace this with your own heartfelt words." },
+    { day:11, element:"Mindfulness", sig:"With all my heart", message:"Write your personal message about Mindfulness here.\n\nReplace this with your own heartfelt words." },
+    { day:12, element:"Generosity",  sig:"With all my heart", message:"Write your personal message about Generosity here.\n\nReplace this with your own heartfelt words." },
+    { day:13, element:"Honesty",     sig:"With all my heart", message:"Write your personal message about Honesty here.\n\nReplace this with your own heartfelt words." },
+    { day:14, element:"Compassion",  sig:"With all my heart", message:"Write your personal message about Compassion here.\n\nReplace this with your own heartfelt words." },
+    { day:15, element:"Balance",     sig:"With all my heart", message:"Write your personal message about Balance here.\n\nReplace this with your own heartfelt words." },
+    { day:16, element:"Strength",    sig:"With all my heart", message:"Write your personal message about Strength here.\n\nReplace this with your own heartfelt words." },
+    { day:17, element:"Warmth",      sig:"With all my heart", message:"Write your personal message about Warmth here.\n\nReplace this with your own heartfelt words." },
+    { day:18, element:"Forgiveness", sig:"With all my heart", message:"Write your personal message about Forgiveness here.\n\nReplace this with your own heartfelt words." },
+    { day:19, element:"Wonder",      sig:"With all my heart", message:"Write your personal message about Wonder here.\n\nReplace this with your own heartfelt words." },
+    { day:20, element:"Dedication",  sig:"With all my heart", message:"Write your personal message about Dedication here.\n\nReplace this with your own heartfelt words." },
+    { day:21, element:"Playfulness", sig:"With all my heart", message:"Write your personal message about Playfulness here.\n\nReplace this with your own heartfelt words." },
+    { day:22, element:"Grace",       sig:"With all my heart", message:"Write your personal message about Grace here.\n\nReplace this with your own heartfelt words." },
+    { day:23, element:"Wisdom",      sig:"With all my heart", message:"Write your personal message about Wisdom here.\n\nReplace this with your own heartfelt words." },
+    { day:24, element:"Tenderness",  sig:"With all my heart", message:"Write your personal message about Tenderness here.\n\nReplace this with your own heartfelt words." },
+    { day:25, element:"Hope",        sig:"With all my heart", message:"Write your personal message about Hope here.\n\nReplace this with your own heartfelt words." },
+    { day:26, element:"Adventure",   sig:"With all my heart", message:"Write your personal message about Adventure here.\n\nReplace this with your own heartfelt words." },
+    { day:27, element:"Serenity",    sig:"With all my heart", message:"Write your personal message about Serenity here.\n\nReplace this with your own heartfelt words." },
+    { day:28, element:"Passion",     sig:"With all my heart", message:"Write your personal message about Passion here.\n\nReplace this with your own heartfelt words." },
+    { day:29, element:"Loyalty",     sig:"With all my heart", message:"Write your personal message about Loyalty here.\n\nReplace this with your own heartfelt words." },
+    { day:30, element:"Love",        sig:"With all my heart", message:"Write your personal message about Love here — make this the most special one.\n\nReplace this with your own heartfelt words." },
   ];
 
-  /* ===== IST GREETING ===== */
-  function getGreetingIST() {
-    // Convert current time to IST (UTC+5:30)
-    const now    = new Date();
-    const utcMs  = now.getTime() + now.getTimezoneOffset() * 60000;
-    const istMs  = utcMs + (5.5 * 3600000);
-    const ist    = new Date(istMs);
-    const h      = ist.getHours();
+  /* Bundled dog photos (Unsplash free) — used if local Dog{N}.jpg/.mp4 is missing */
+  const DOG_URLS = [
+    "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800",
+    "https://images.unsplash.com/photo-1534361960057-19f4434a6f3b?w=800",
+    "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
+    "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=800",
+    "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=800",
+    "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800",
+    "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800",
+    "https://images.unsplash.com/photo-1552053831-71594a27632d?w=800",
+    "https://images.unsplash.com/photo-1591160690555-5debfba289f0?w=800",
+    "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=800",
+    "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=800",
+    "https://images.unsplash.com/photo-1558788353-f76d92427f16?w=800",
+    "https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=800",
+    "https://images.unsplash.com/photo-1501472312651-726afe119ff1?w=800",
+    "https://images.unsplash.com/photo-1506224772180-d75b3efbe9be?w=800",
+    "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=800",
+    "https://images.unsplash.com/photo-1568393691622-c7ba131d1b16?w=800",
+    "https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800",
+    "https://images.unsplash.com/photo-1544568100-847a948585b9?w=800",
+    "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=800",
+    "https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=800",
+    "https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800",
+    "https://images.unsplash.com/photo-1425082661705-1834bfd09dca?w=800",
+    "https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=800",
+    "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=800",
+    "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800",
+    "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800",
+    "https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800",
+    "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
+    "https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=800",
+  ];
 
-    if (h >= 4 && h < 6)   return { word: "What are you doing...",  special: true };
-    if (h >= 6 && h < 11)  return { word: "Good Morning",           special: false };
-    if (h >= 11 && h < 15) return { word: "Good Afternoon",         special: false };
-    if (h >= 15 && h < 21) return { word: "Good Evening",           special: false };
-    return                         { word: "Good Night",             special: false };
+  /* ════════════════════════════════════════
+     DAY CALCULATION (series start: 25 May 2026, IST)
+  ════════════════════════════════════════ */
+  const SERIES_START_ISO = '2026-05-25';
+
+  function getISTDate() {
+    const now   = new Date();
+    const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utcMs + 5.5 * 3600000);
+  }
+
+  function getDayNumber() {
+    const ist   = getISTDate();
+    const start = new Date(SERIES_START_ISO + 'T00:00:00');
+    const today = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
+    const diff  = Math.floor((today - start) / 86400000) + 1;
+    return Math.min(Math.max(diff, 1), 30);
+  }
+
+  function getTodayData() { return DAYS_DATA[getDayNumber() - 1]; }
+
+  /* ════════════════════════════════════════
+     IST GREETING
+  ════════════════════════════════════════ */
+  function getGreeting() {
+    const h = getISTDate().getHours();
+    if (h >= 4  && h < 6)  return { word: "What are you doing...", special: true };
+    if (h >= 6  && h < 11) return { word: "Good Morning",          special: false };
+    if (h >= 11 && h < 15) return { word: "Good Afternoon",        special: false };
+    if (h >= 15 && h < 21) return { word: "Good Evening",          special: false };
+    return                         { word: "Good Night",            special: false };
   }
 
   function formatDate(d) {
-    return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+    return String(d.getDate()).padStart(2,'0') + '/' +
+           String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
   }
 
-  function getTodayData() {
-    return DAYS_DATA[Math.min(new Date().getDate(), 30) - 1];
+  /* ════════════════════════════════════════
+     POPULATE PAGE 1
+  ════════════════════════════════════════ */
+  function populateLanding() {
+    const ist      = getISTDate();
+    const data     = getTodayData();
+    const greeting = getGreeting();
+
+    document.getElementById('greetingMain').innerHTML = greeting.special
+      ? `<em>${greeting.word}</em>`
+      : `<em>${greeting.word}</em> my love!`;
+
+    document.getElementById('greetingDate').textContent  = `Today is ${formatDate(ist)}`;
+    document.getElementById('topicName').textContent      = data.element;
+    document.getElementById('dayIndicator').textContent   = `Day ${getDayNumber()} of 30`;
   }
 
-  /* Deterministic per-day seeded random (day number as seed) for bottom polaroid */
+  /* ════════════════════════════════════════
+     MEDIA HELPER — tries jpg → mp4 → fallbackUrl → placeholder
+  ════════════════════════════════════════ */
+  function loadMedia(container, basePath, placeholder, fallbackUrl) {
+    function tryFallback(url) {
+      const img2 = new Image();
+      img2.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+      img2.onload  = () => { container.innerHTML = ''; container.appendChild(img2); };
+      img2.onerror = () => { container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`; };
+      img2.src = url;
+    }
+    function tryVideo() {
+      const vid = document.createElement('video');
+      vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
+      vid.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+      vid.onerror = () => fallbackUrl ? tryFallback(fallbackUrl) : (container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`);
+      vid.src = basePath + '.mp4';
+      container.innerHTML = '';
+      container.appendChild(vid);
+      vid.load();
+    }
+    const img = new Image();
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+    img.onload  = () => { container.innerHTML = ''; container.appendChild(img); };
+    img.onerror = () => tryVideo();
+    img.src = basePath + '.jpg';
+  }
+
   function seededRand(seed) {
-    let x = Math.sin(seed + 1) * 10000;
+    const x = Math.sin(seed + 1) * 10000;
     return x - Math.floor(x);
   }
 
-  /* ===== POPULATE PAGE 1 ===== */
-  function populateLanding() {
-    const today   = new Date();
-    const data    = getTodayData();
-    const greeting = getGreetingIST();
-
-    const mainEl = document.getElementById('greetingMain');
-    if (greeting.special) {
-      mainEl.innerHTML = `<em>${greeting.word}</em>`;
-    } else {
-      mainEl.innerHTML = `<em>${greeting.word}</em> my love!`;
-    }
-
-    document.getElementById('greetingDate').textContent = `Today is ${formatDate(today)}`;
-    document.getElementById('topicName').textContent    = data.element;
-    document.getElementById('dayIndicator').textContent = `Day ${data.day} of 30`;
-  }
-
-  /* ===== POPULATE PAGE 2 ===== */
+  /* ════════════════════════════════════════
+     POPULATE PAGE 2
+  ════════════════════════════════════════ */
   function populateMessage() {
     const data = getTodayData();
-    const day  = data.day;
+    const day  = getDayNumber();
 
     document.getElementById('messageTitle').textContent = data.element;
     document.getElementById('messageBody').textContent  = data.message;
     document.getElementById('sigPhrase').textContent    = data.sig;
 
-    /* Top polaroid: Us{day} */
-    const topImg = document.getElementById('polaroidTopImg');
-    const topCap = document.getElementById('polaroidTopCaption');
-    const usImg  = new Image();
-    usImg.src    = `./assets/Us${day}.jpg`;
-    usImg.alt    = `Us — Day ${day}`;
-    usImg.width  = 680; usImg.height = 510; usImg.loading = 'lazy';
-    usImg.style  = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
-    usImg.onerror = () => {
-      topImg.innerHTML = `<p class="polaroid-placeholder">Hopefully a photo related to the topic</p>`;
-    };
-    usImg.onload  = () => { topImg.innerHTML = ''; topImg.appendChild(usImg); };
-    topCap.textContent = 'Hopefully a photo related to the topic';
+    loadMedia(document.getElementById('polaroidTopMedia'),    `./assets/Us${day}`,  'Hopefully a photo related to the topic', null);
 
-    /* Bottom polaroid: 50/50 seeded per day → Me{day} or Dog{day} */
-    const bottomImg = document.getElementById('polaroidBottomImg');
-    const bottomCap = document.getElementById('polaroidBottomCaption');
-    const isMe      = seededRand(day) < 0.5;
-    const prefix    = isMe ? 'Me' : 'Dog';
-    const label     = isMe ? `Me — Day ${day}` : `Dog — Day ${day}`;
-    const botImg    = new Image();
-    botImg.src      = `./assets/${prefix}${day}.jpg`;
-    botImg.alt      = label;
-    botImg.width    = 680; botImg.height = 510; botImg.loading = 'lazy';
-    botImg.style    = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
-    botImg.onerror  = () => {
-      bottomImg.innerHTML = `<p class="polaroid-placeholder">A photo of me (or a dog)</p>`;
-    };
-    botImg.onload   = () => { bottomImg.innerHTML = ''; bottomImg.appendChild(botImg); };
-    bottomCap.textContent = 'A photo of me (or a dog)';
+    const isMe = seededRand(day) < 0.5;
+    if (isMe) {
+      loadMedia(document.getElementById('polaroidBottomMedia'), `./assets/Me${day}`,  'A photo of me (or a dog)', null);
+    } else {
+      loadMedia(document.getElementById('polaroidBottomMedia'), `./assets/Dog${day}`, 'A photo of me (or a dog)', DOG_URLS[day - 1]);
+    }
   }
 
-  /* ===== NAVIGATION ===== */
-  function goToMessage() {
-    populateMessage();
-    switchPage('pageLanding', 'pageMessage');
-  }
-  function goBack() { switchPage('pageMessage', 'pageLanding'); }
+  /* ════════════════════════════════════════
+     NAVIGATION
+  ════════════════════════════════════════ */
+  function goToMessage() { populateMessage(); switchPage('pageLanding', 'pageMessage'); }
+  function goBack()       { switchPage('pageMessage', 'pageLanding'); }
 
   function switchPage(fromId, toId) {
     const overlay = document.getElementById('transitionOverlay');
     overlay.classList.add('active');
     setTimeout(() => {
       document.getElementById(fromId).classList.remove('active');
-      document.getElementById(fromId).setAttribute('aria-hidden','true');
+      document.getElementById(fromId).setAttribute('aria-hidden', 'true');
       document.getElementById(toId).classList.add('active');
       document.getElementById(toId).removeAttribute('aria-hidden');
       document.querySelectorAll(`#${toId} .animate-in`).forEach(el => {
@@ -450,10 +454,12 @@
     }, 350);
   }
 
-  /* ===== FLOATING HEARTS ===== */
+  /* ════════════════════════════════════════
+     FLOATING HEARTS
+  ════════════════════════════════════════ */
   function makeHeartSVG(sz) {
     const s = sz === 'big' ? 30 : 20;
-    const maskId = `oh_${Math.random().toString(36).slice(2)}`;
+    const maskId = 'oh_' + Math.random().toString(36).slice(2);
     return `<svg width="${s}" height="${s}" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <mask id="${maskId}">
@@ -462,8 +468,8 @@
         </mask>
       </defs>
       <path d="M30 52S8 37 8 22.5a10.5 10.5 0 0 1 22-2 10.5 10.5 0 0 1 22 2C52 37 30 52 30 52Z" fill="#e8637a" stroke="#c43f5a" stroke-width="1.5"/>
-      <line x1="5" y1="51" x2="55" y2="9" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" mask="url(#${maskId})"/>
-      <polyline points="47,7 55,9 53,17" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <line x1="6" y1="50" x2="56" y2="8" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" mask="url(#${maskId})"/>
+      <polyline points="48,6 56,8 54,16" stroke="#3a7bd5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
     </svg>`;
   }
 
@@ -474,18 +480,17 @@
     el.innerHTML = makeHeartSVG(Math.random() > 0.5 ? 'big' : 'small');
     const dur = 8 + Math.random() * 12;
     const del = Math.random() * 4;
-    el.style.left             = `${Math.random() * 96}vw`;
+    el.style.left             = Math.random() * 96 + 'vw';
     el.style.bottom           = '-60px';
-    el.style.animationDuration = `${dur}s`;
-    el.style.animationDelay   = `${del}s`;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay   = del + 's';
     layer.appendChild(el);
     setTimeout(() => el.remove(), (dur + del + 1) * 1000);
   }
 
   setInterval(spawnHeart, 1200);
-  [0,300,700,1400,2100].forEach(d => setTimeout(spawnHeart, d));
+  [0, 300, 700, 1400, 2100].forEach(d => setTimeout(spawnHeart, d));
 
-  /* ===== INIT ===== */
   populateLanding();
 </script>
 </body>
