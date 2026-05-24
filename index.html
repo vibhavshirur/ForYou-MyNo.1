@@ -132,6 +132,12 @@
     .message-signature{margin-top:var(--sp10);font-family:var(--font-sig);font-size:var(--text-lg);color:var(--my-red);text-align:right;line-height:1.4;}
     .sig-heart{display:inline-block;vertical-align:middle;margin:0 .2rem;}
     .sig-name{display:block;font-size:var(--text-xl);}
+    .venom-toggle{
+      cursor:pointer;
+      border-bottom:1px dashed rgba(192,57,43,0.4);
+      transition:opacity var(--t-fast) var(--ease-out), border-color var(--t-fast);
+    }
+    .venom-toggle:hover{opacity:0.75;border-color:rgba(192,57,43,0.8);}
 
     /* ── PAGE TRANSITION ── */
     .page-transition-overlay{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg in oklab,var(--her-blue-pale),var(--warm-rose));opacity:0;pointer-events:none;transition:opacity 0.35s var(--ease-out);}
@@ -237,7 +243,7 @@
             <polyline points="48,6 56,8 54,16" stroke="#3a7bd5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" mask="url(#outsideHeart2)"/>
           </svg>
         </span>
-        <span class="sig-name">— Venom</span>
+        <span class="sig-name">— <span id="venomToggle" class="venom-toggle" title="psst... click me">Venom</span></span>
       </div>
     </div>
 
@@ -246,7 +252,7 @@
       <div class="polaroid-media" id="polaroidBottomMedia">
         <p class="polaroid-placeholder">A photo of me (or a dog)</p>
       </div>
-      <div class="polaroid-caption">A photo of me (or a dog)</div>
+      <div class="polaroid-caption" id="polaroidBottomCaption">A photo of me (or a dog)</div>
     </div>
 
   </div>
@@ -374,9 +380,9 @@
       ? `<em>${greeting.word}</em>`
       : `<em>${greeting.word}</em> my love!`;
 
-    document.getElementById('greetingDate').textContent  = `Today is ${formatDate(ist)}`;
-    document.getElementById('topicName').textContent      = data.element;
-    document.getElementById('dayIndicator').textContent   = `Day ${getDayNumber()} of 30`;
+    document.getElementById('greetingDate').textContent = `Today is ${formatDate(ist)}`;
+    document.getElementById('topicName').textContent    = data.element;
+    document.getElementById('dayIndicator').textContent = `Day ${getDayNumber()} of 30`;
   }
 
   /* ════════════════════════════════════════
@@ -413,6 +419,25 @@
   }
 
   /* ════════════════════════════════════════
+     BOTTOM POLAROID — toggle state
+  ════════════════════════════════════════ */
+  let bottomIsMe = false;
+
+  function loadBottomPolaroid(showMe) {
+    const day       = getDayNumber();
+    const container = document.getElementById('polaroidBottomMedia');
+    const caption   = document.getElementById('polaroidBottomCaption');
+    if (showMe) {
+      loadMedia(container, `./assets/Me${day}`, 'A photo of me (or a dog)', null);
+      caption.textContent = 'A photo of me';
+    } else {
+      loadMedia(container, `./assets/Dog${day}`, 'A photo of me (or a dog)', DOG_URLS[day - 1]);
+      caption.textContent = 'A photo of a dog 🐶';
+    }
+    bottomIsMe = showMe;
+  }
+
+  /* ════════════════════════════════════════
      POPULATE PAGE 2
   ════════════════════════════════════════ */
   function populateMessage() {
@@ -423,14 +448,21 @@
     document.getElementById('messageBody').textContent  = data.message;
     document.getElementById('sigPhrase').textContent    = data.sig;
 
-    loadMedia(document.getElementById('polaroidTopMedia'),    `./assets/Us${day}`,  'Hopefully a photo related to the topic', null);
+    // Top polaroid: Us{day}.jpg or Us{day}.mp4
+    loadMedia(
+      document.getElementById('polaroidTopMedia'),
+      `./assets/Us${day}`,
+      'Hopefully a photo related to the topic',
+      null
+    );
 
-    const isMe = seededRand(day) < 0.5;
-    if (isMe) {
-      loadMedia(document.getElementById('polaroidBottomMedia'), `./assets/Me${day}`,  'A photo of me (or a dog)', null);
-    } else {
-      loadMedia(document.getElementById('polaroidBottomMedia'), `./assets/Dog${day}`, 'A photo of me (or a dog)', DOG_URLS[day - 1]);
-    }
+    // Bottom polaroid: default seeded 50/50, Venom click toggles
+    const defaultIsMe = seededRand(day) < 0.5;
+    loadBottomPolaroid(defaultIsMe);
+
+    document.getElementById('venomToggle').onclick = () => {
+      loadBottomPolaroid(!bottomIsMe);
+    };
   }
 
   /* ════════════════════════════════════════
@@ -480,10 +512,10 @@
     el.innerHTML = makeHeartSVG(Math.random() > 0.5 ? 'big' : 'small');
     const dur = 8 + Math.random() * 12;
     const del = Math.random() * 4;
-    el.style.left             = Math.random() * 96 + 'vw';
-    el.style.bottom           = '-60px';
+    el.style.left              = Math.random() * 96 + 'vw';
+    el.style.bottom            = '-60px';
     el.style.animationDuration = dur + 's';
-    el.style.animationDelay   = del + 's';
+    el.style.animationDelay    = del + 's';
     layer.appendChild(el);
     setTimeout(() => el.remove(), (dur + del + 1) * 1000);
   }
