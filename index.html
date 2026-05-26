@@ -112,11 +112,10 @@
     /* ── PAGE 2: MESSAGE ── */
     .message-page-inner{display:flex;flex-direction:column;align-items:center;gap:var(--sp6);max-width:720px;width:100%;}
 
-    /* Polaroid */
+    /* Polaroid — dynamic height based on photo */
     .polaroid{background:#fffef8;border:1px solid rgba(180,150,140,0.25);border-radius:var(--r-sm);padding:var(--sp4) var(--sp4) var(--sp8);width:100%;position:relative;}
-   /* WITH this: */
-.polaroid-media{width:100%;background:rgba(200,180,190,0.12);border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.polaroid-media img,.polaroid-media video{width:100%;height:auto;max-height:80vh;object-fit:contain;border-radius:2px;display:block;}
+    .polaroid-media{width:100%;background:rgba(200,180,190,0.12);border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:120px;}
+    .polaroid-media img,.polaroid-media video{width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:2px;}
     .polaroid-placeholder{font-size:var(--text-sm);color:var(--text-faint);font-style:italic;text-align:center;padding:var(--sp4);max-width:none;}
     .polaroid-caption{position:absolute;bottom:var(--sp2);left:0;right:0;text-align:center;font-size:var(--text-xs);color:var(--text-faint);letter-spacing:0.05em;}
 
@@ -334,22 +333,19 @@
   /* ════════════════════════════════════════
      DAY CALCULATION (series start: 25 May 2026, IST)
   ════════════════════════════════════════ */
-  const SERIES_START_ISO = '2026-05-25';
-
   function getISTDate() {
     const now   = new Date();
     const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
     return new Date(utcMs + 5.5 * 3600000);
   }
 
-function getDayNumber() {
-  const ist   = getISTDate();
-  // Parse start date safely without relying on timezone offset in string
-  const start = new Date(2026, 4, 25); // month is 0-indexed: 4 = May
-  const today = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
-  const diff  = Math.floor((today - start) / 86400000) + 1;
-  return Math.min(Math.max(diff, 1), 30);
-}
+  function getDayNumber() {
+    const ist   = getISTDate();
+    const start = new Date(2026, 4, 25); // 25 May 2026 — month is 0-indexed
+    const today = new Date(ist.getFullYear(), ist.getMonth(), ist.getDate());
+    const diff  = Math.floor((today - start) / 86400000) + 1;
+    return Math.min(Math.max(diff, 1), 30);
+  }
 
   function getTodayData() { return DAYS_DATA[getDayNumber() - 1]; }
 
@@ -388,33 +384,37 @@ function getDayNumber() {
   }
 
   /* ════════════════════════════════════════
-     MEDIA HELPER — tries jpg → mp4 → fallbackUrl → placeholder
+     MEDIA HELPER — jpg → mp4 → Unsplash → dog.ceo → placeholder
   ════════════════════════════════════════ */
-  function tryFallback(url) {
-  // Try original URL first, then dog.ceo API as last resort
-  const img2 = new Image();
-  img2.crossOrigin = 'anonymous';
-  img2.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
-  img2.onload  = () => { container.innerHTML = ''; container.appendChild(img2); };
-  img2.onerror = () => {
-    fetch('https://dog.ceo/api/breeds/image/random')
-      .then(r => r.json())
-      .then(data => {
-        const img3 = new Image();
-        img3.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
-        img3.onload  = () => { container.innerHTML = ''; container.appendChild(img3); };
-        img3.onerror = () => { container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`; };
-        img3.src = data.message;
-      })
-      .catch(() => { container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`; });
-  };
-  img2.src = url;
-}
+  function loadMedia(container, basePath, placeholder, fallbackUrl) {
+    function showPlaceholder() {
+      container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`;
+    }
+    function tryDogCeo() {
+      fetch('https://dog.ceo/api/breeds/image/random')
+        .then(r => r.json())
+        .then(data => {
+          const img3 = new Image();
+          img3.style.cssText = 'width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:2px;';
+          img3.onload  = () => { container.innerHTML = ''; container.appendChild(img3); };
+          img3.onerror = () => showPlaceholder();
+          img3.src = data.message;
+        })
+        .catch(() => showPlaceholder());
+    }
+    function tryFallback(url) {
+      const img2 = new Image();
+      img2.crossOrigin = 'anonymous';
+      img2.style.cssText = 'width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:2px;';
+      img2.onload  = () => { container.innerHTML = ''; container.appendChild(img2); };
+      img2.onerror = () => tryDogCeo();
+      img2.src = url;
+    }
     function tryVideo() {
       const vid = document.createElement('video');
       vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
       vid.style.cssText = 'width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:2px;';
-      vid.onerror = () => fallbackUrl ? tryFallback(fallbackUrl) : (container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`);
+      vid.onerror = () => fallbackUrl ? tryFallback(fallbackUrl) : showPlaceholder();
       vid.src = basePath + '.mp4';
       container.innerHTML = '';
       container.appendChild(vid);
@@ -446,7 +446,7 @@ function getDayNumber() {
       caption.textContent = 'A photo of me';
     } else {
       loadMedia(container, `./assets/Dog${day}`, 'A photo of me (or a dog)', DOG_URLS[day - 1]);
-      caption.textContent = 'A photo of a dog 🐶';
+      caption.textContent = 'A photo of a dog \uD83D\uDC36';
     }
     bottomIsMe = showMe;
   }
@@ -462,7 +462,6 @@ function getDayNumber() {
     document.getElementById('messageBody').textContent  = data.message;
     document.getElementById('sigPhrase').textContent    = data.sig;
 
-    // Top polaroid: Us{day}.jpg or Us{day}.mp4
     loadMedia(
       document.getElementById('polaroidTopMedia'),
       `./assets/Us${day}`,
@@ -470,7 +469,6 @@ function getDayNumber() {
       null
     );
 
-    // Bottom polaroid: default seeded 50/50, Venom click toggles
     const defaultIsMe = seededRand(day) < 0.5;
     loadBottomPolaroid(defaultIsMe);
 
