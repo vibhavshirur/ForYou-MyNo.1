@@ -114,8 +114,9 @@
 
     /* Polaroid */
     .polaroid{background:#fffef8;border:1px solid rgba(180,150,140,0.25);border-radius:var(--r-sm);padding:var(--sp4) var(--sp4) var(--sp8);width:100%;position:relative;}
-    .polaroid-media{width:100%;aspect-ratio:4/3;background:rgba(200,180,190,0.12);border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-    .polaroid-media img,.polaroid-media video{width:100%;height:100%;object-fit:cover;border-radius:2px;}
+   /* WITH this: */
+.polaroid-media{width:100%;background:rgba(200,180,190,0.12);border-radius:2px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.polaroid-media img,.polaroid-media video{width:100%;height:auto;max-height:80vh;object-fit:contain;border-radius:2px;display:block;}
     .polaroid-placeholder{font-size:var(--text-sm);color:var(--text-faint);font-style:italic;text-align:center;padding:var(--sp4);max-width:none;}
     .polaroid-caption{position:absolute;bottom:var(--sp2);left:0;right:0;text-align:center;font-size:var(--text-xs);color:var(--text-faint);letter-spacing:0.05em;}
 
@@ -389,18 +390,30 @@ function getDayNumber() {
   /* ════════════════════════════════════════
      MEDIA HELPER — tries jpg → mp4 → fallbackUrl → placeholder
   ════════════════════════════════════════ */
-  function loadMedia(container, basePath, placeholder, fallbackUrl) {
-    function tryFallback(url) {
-      const img2 = new Image();
-      img2.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
-      img2.onload  = () => { container.innerHTML = ''; container.appendChild(img2); };
-      img2.onerror = () => { container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`; };
-      img2.src = url;
-    }
+  function tryFallback(url) {
+  // Try original URL first, then dog.ceo API as last resort
+  const img2 = new Image();
+  img2.crossOrigin = 'anonymous';
+  img2.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+  img2.onload  = () => { container.innerHTML = ''; container.appendChild(img2); };
+  img2.onerror = () => {
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then(r => r.json())
+      .then(data => {
+        const img3 = new Image();
+        img3.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+        img3.onload  = () => { container.innerHTML = ''; container.appendChild(img3); };
+        img3.onerror = () => { container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`; };
+        img3.src = data.message;
+      })
+      .catch(() => { container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`; });
+  };
+  img2.src = url;
+}
     function tryVideo() {
       const vid = document.createElement('video');
       vid.autoplay = true; vid.loop = true; vid.muted = true; vid.playsInline = true;
-      vid.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+      vid.style.cssText = 'width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:2px;';
       vid.onerror = () => fallbackUrl ? tryFallback(fallbackUrl) : (container.innerHTML = `<p class="polaroid-placeholder">${placeholder}</p>`);
       vid.src = basePath + '.mp4';
       container.innerHTML = '';
@@ -408,7 +421,7 @@ function getDayNumber() {
       vid.load();
     }
     const img = new Image();
-    img.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:2px;';
+    img.style.cssText = 'width:100%;height:auto;max-height:80vh;object-fit:contain;display:block;border-radius:2px;';
     img.onload  = () => { container.innerHTML = ''; container.appendChild(img); };
     img.onerror = () => tryVideo();
     img.src = basePath + '.jpg';
